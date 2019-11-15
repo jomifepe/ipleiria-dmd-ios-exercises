@@ -7,18 +7,23 @@
 //
 
 import UIKit
+import OSLog
 
 class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: properties
-    @IBOutlet weak var tvMealName: UITextField!
-    @IBOutlet weak var lblMealName: UILabel!
-    @IBOutlet weak var photoImageView: UIImageView!
+
+    @IBOutlet weak var ratingControl: RatingControl!
+    @IBOutlet weak var tfMealName: UITextField!
+    @IBOutlet weak var imageViewer: UIImageView!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
+    
+    var meal: Meal?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        tvMealName.delegate = self
-        imagePickerController.delegate = self
+        tfMealName.delegate = self
+        // imagePickerController.delegate = self
     }
     
     // MARK: UITextFieldDelegate
@@ -28,12 +33,12 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         return true
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        lblMealName.text = textField.text
-    }
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        lblMealName.text = textField.text
+//    }
     @IBAction func selectImageFromPhotoLibrary(_ sender: UITapGestureRecognizer) {
         // Hide the keyboard.
-        tvMealName.resignFirstResponder()
+        tfMealName.resignFirstResponder()
         
         // UIImagePickerController is a view controller that lets a user pick media from their photo library.
         let imagePickerController = UIImagePickerController()
@@ -43,6 +48,24 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         
         // Make sure ViewController is notified when the user picks an image.
         present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    // This method lets you configure a view controller before it's presented.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        // Configure the destination view controller only when the save button is pressed.
+        guard let button = sender as? UIBarButtonItem, button === saveButton else {
+            os_log("The save button was not pressed, cancelling", log: OSLog.default, type: .debug)
+            return
+        }
+        let name = tfMealName.text ?? ""
+        let photo = imageViewer.image
+        let rating = ratingControl.rating
+        // Set the meal to be passed to MealTableViewController after the unwind segue.
+        meal = Meal(name: name, photo: photo, rating: rating)
+    }
+    @IBAction func cancel(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
 }
 
