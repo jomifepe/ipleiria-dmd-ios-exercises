@@ -45,6 +45,7 @@
                                     <outlet property="imgView" destination="qd7-g6-INN" id="Hww-5I-TtO"/>
                                     <outlet property="labelView" destination="W4D-YV-QfQ" id="j8d-rd-RaU"/>
                                     <outlet property="ratingControl" destination="3NT-00-z1D" id="ZKO-BP-1vs"/>
+                                    <segue destination="BYZ-38-t0r" kind="showDetail" identifier="ShowDetail" id="WhW-rK-jAW"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -54,9 +55,14 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Meals" id="yu0-KI-Jjy">
+                        <barButtonItem key="leftBarButtonItem" title="Download" id="ZL2-nI-C6D">
+                            <connections>
+                                <action selector="downloadAction:" destination="ega-gg-qED" id="fHg-Kp-cjx"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="8Ob-0T-8qW">
                             <connections>
-                                <segue destination="S5Q-eP-RJV" kind="presentation" id="zsw-Va-NY4"/>
+                                <segue destination="S5Q-eP-RJV" kind="presentation" identifier="AddItem" id="zsw-Va-NY4"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -74,22 +80,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gJV-GR-UPf">
-                                <rect key="frame" x="16" y="76" width="382" height="480"/>
+                                <rect key="frame" x="16" y="16" width="382" height="808"/>
                                 <subviews>
+                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xDq-S0-gN8">
+                                        <rect key="frame" x="4" y="0.0" width="374" height="322"/>
+                                    </mapView>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter meal name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pbN-7I-AUN">
-                                        <rect key="frame" x="8" y="0.0" width="366" height="34"/>
+                                        <rect key="frame" x="8" y="330" width="366" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                     </textField>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="defaultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="Ulb-Hi-sxK">
-                                        <rect key="frame" x="1" y="42" width="380" height="380"/>
+                                        <rect key="frame" x="1" y="372" width="380" height="380"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="380" id="XLn-1Q-bSj"/>
                                             <constraint firstAttribute="height" constant="380" id="rJ2-fg-Ndi"/>
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="QrR-Ot-8NL" customClass="RatingControl" customModule="FoodTracker" customModuleProvider="target">
-                                        <rect key="frame" x="67" y="430" width="248" height="50"/>
+                                        <rect key="frame" x="67" y="760" width="248" height="48"/>
                                         <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="size" keyPath="starSize">
@@ -109,9 +118,10 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="gJV-GR-UPf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="Fnz-7c-ALH"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gJV-GR-UPf" secondAttribute="trailing" constant="16" id="Yrc-ps-VR5"/>
-                            <constraint firstItem="gJV-GR-UPf" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="biw-xt-UPa"/>
+                            <constraint firstItem="gJV-GR-UPf" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="16" id="Fh7-hs-sbV"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gJV-GR-UPf" secondAttribute="trailing" constant="16" id="PZZ-fh-q9D"/>
+                            <constraint firstItem="gJV-GR-UPf" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="VYI-i4-EHt"/>
+                            <constraint firstItem="gJV-GR-UPf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="oE6-sO-uaP"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -129,6 +139,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="imageViewer" destination="Ulb-Hi-sxK" id="cxe-eM-qgH"/>
+                        <outlet property="mapView" destination="xDq-S0-gN8" id="cW8-tQ-PHq"/>
                         <outlet property="ratingControl" destination="QrR-Ot-8NL" id="3Ys-Yv-mBb"/>
                         <outlet property="saveButton" destination="N4e-tN-jct" id="BZo-6S-9Oa"/>
                         <outlet property="tfMealName" destination="pbN-7I-AUN" id="7SE-fC-3RQ"/>
@@ -142,7 +153,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2862.3188405797105" y="138.61607142857142"/>
+            <point key="canvasLocation" x="2253.6231884057975" y="138.61607142857142"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="UkJ-nX-0Dq">
@@ -178,10 +189,13 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Adh-FD-7gJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1952.1739130434785" y="138.61607142857142"/>
+            <point key="canvasLocation" x="1255" y="610"/>
         </scene>
     </scenes>
     <resources>
         <image name="defaultPhoto" width="1080" height="1080"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="WhW-rK-jAW"/>
+    </inferredMetricsTieBreakers>
 </document>

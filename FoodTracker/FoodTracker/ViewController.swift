@@ -8,14 +8,16 @@
 
 import UIKit
 import OSLog
+import MapKit
 
 class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: properties
-
+    
     @IBOutlet weak var ratingControl: RatingControl!
     @IBOutlet weak var tfMealName: UITextField!
     @IBOutlet weak var imageViewer: UIImageView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak var mapView: MKMapView!
     
     var meal: Meal?
     
@@ -24,7 +26,37 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         // Do any additional setup after loading the view.
         tfMealName.delegate = self
         // imagePickerController.delegate = self
+        
+        if let meal = meal {
+            navigationItem.title = meal.name
+            tfMealName.text = meal.name
+            imageViewer.image = meal.photo
+            ratingControl.rating = meal.rating
+            
+            tfMealName.isUserInteractionEnabled = false
+            imageViewer.isUserInteractionEnabled = false
+            ratingControl.isUserInteractionEnabled = false
+            
+            if let restaurant = meal.restaurant {
+                let restaurantAnnotation = RestaurantMKAnnotation(restaurant: restaurant)
+                mapView.addAnnotation(restaurantAnnotation)
+                
+                let regionRadius: CLLocationDistance = 200
+                
+                let coordinateRegion = MKCoordinateRegion(
+                    center: restaurantAnnotation.coordinate,
+                    latitudinalMeters: regionRadius,
+                    longitudinalMeters: regionRadius)
+                mapView.setRegion(coordinateRegion, animated: true)
+            } else {
+                mapView.isHidden = true
+            }
+        } else {
+            mapView.isHidden = true
+        }
     }
+    
+    
     
     // MARK: UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -33,9 +65,9 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
         return true
     }
     
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        lblMealName.text = textField.text
-//    }
+    //    func textFieldDidEndEditing(_ textField: UITextField) {
+    //        lblMealName.text = textField.text
+    //    }
     @IBAction func selectImageFromPhotoLibrary(_ sender: UITapGestureRecognizer) {
         // Hide the keyboard.
         tfMealName.resignFirstResponder()
